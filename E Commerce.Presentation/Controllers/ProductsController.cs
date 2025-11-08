@@ -11,7 +11,7 @@ namespace E_Commerce.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")] //BaseUrl/api/products
-    internal class ProductsController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
 
@@ -30,7 +30,7 @@ namespace E_Commerce.Presentation.Controllers
         }
         [HttpGet("{id}")]
         // Get : BaseUrl/api/Products/{id}
-        public async Task<ActionResult<ProductDTO>> GetProductById(int id)
+        public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
             return Ok(product);

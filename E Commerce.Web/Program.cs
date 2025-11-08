@@ -34,7 +34,7 @@ namespace E_Commerce.Web
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(X=>X.AddProfile<ProductProfile>());
             builder.Services.AddScoped<IProductService, ProductService>();
-
+            builder.Services.AddTransient<ProductPictureUrlResolver>();
             #endregion
 
             var app = builder.Build();
