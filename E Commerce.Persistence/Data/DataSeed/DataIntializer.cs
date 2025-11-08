@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.Persistence.Data.DataSeed
 {
-    internal class DataIntializer : IDataIntializer
+    public class DataIntializer : IDataIntializer
     {
         private readonly StoreDbContext _dbContext;
 
@@ -57,7 +57,7 @@ namespace E_Commerce.Persistence.Data.DataSeed
         }
         private void SeedDataFromJson<T,TKey>(string FileName,DbSet<T> dbset)where T : BaseEntity<TKey>
         {
-            var FilePath = @"..\E Commerce.Persistence\Data\DataSeed\JSONFiles" + FileName;
+            var FilePath = @"..\E Commerce.Persistence\Data\DataSeed\JSONFiles\" + FileName;
 
             if (!File.Exists(FilePath)) throw new FileNotFoundException($"Json File Not Found in Path : {FilePath}");
             try
