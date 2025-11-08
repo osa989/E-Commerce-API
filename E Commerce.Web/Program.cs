@@ -32,7 +32,10 @@ namespace E_Commerce.Web
             });
             builder.Services.AddScoped<IDataIntializer, DataIntializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(X=>X.AddProfile<ProductProfile>());
+            //builder.Services.AddAutoMapper(X=>X.AddProfile<ProductProfile>());
+            builder.Services.AddAutoMapper(typeof(ServiceAssemplyReference).Assembly); // register all profiles in the assembly
+            //builder.Services.AddAutoMapper(X=>X.LicenseKey = "",typeof(ProductProfile).Assembly); // allow dependency injection in all profiles 
+
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddTransient<ProductPictureUrlResolver>();
             #endregion
@@ -56,7 +59,7 @@ namespace E_Commerce.Web
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles(); // to serve static files from wwwroot folder but in version 9 and above its enabled by default
 
             app.MapControllers(); 
             #endregion
