@@ -4,12 +4,13 @@ using E_Commerce.Persistence.Data.DataSeed;
 using E_Commerce.Persistence.Data.DbContexts;
 using E_Commerce.Web.Extentions;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace E_Commerce.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         { 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,8 @@ namespace E_Commerce.Web
             var app = builder.Build();
             #region DataSeed - apply Migration
 
-            app.MigrateDatabase().SeedDatabase();
+            await app.MigrateDatabaseAsync();
+                await app.SeedDatabaseAsync();
 
 
 
@@ -51,7 +53,7 @@ namespace E_Commerce.Web
             app.MapControllers(); 
             #endregion
 
-            app.Run();
+           await app.RunAsync();
         }
     }
 }

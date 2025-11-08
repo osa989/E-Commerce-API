@@ -1,25 +1,27 @@
 ﻿using E_Commerce.Domain.Contract;
 using E_Commerce.Persistence.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace E_Commerce.Web.Extentions
 {
     public static class WebApplicationRegistration
     {
-        public static WebApplication MigrateDatabase(this WebApplication app)
+        public static async Task<WebApplication> MigrateDatabaseAsync(this WebApplication app)
         {
-            using var Scope = app.Services.CreateScope();
+            await using var Scope =  app.Services.CreateAsyncScope();
 
-            var DbContextService = Scope.ServiceProvider.GetRequiredService<StoreDbContext>();
-            if (DbContextService.Database.GetPendingMigrations().Any())
-                DbContextService.Database.Migrate();
+            var dbContextService = Scope.ServiceProvider.GetRequiredService<StoreDbContext>();
+            var PendingMigrations = await dbContextService.Database.GetPendingMigrationsAsync();
+            if (PendingMigrations.Any())
+               await dbContextService.Database.MigrateAsync();
             return app;
         }   
-        public static WebApplication SeedDatabase(this WebApplication app)
+        public static async Task<WebApplication> SeedDatabaseAsync(this WebApplication app)
         {
-            using var Scope = app.Services.CreateScope();
+            await using var Scope = app.Services.CreateAsyncScope();
             var DataIntializerService = Scope.ServiceProvider.GetRequiredService<IDataIntializer>();
-            DataIntializerService.Intialize();
+            await DataIntializerService.IntializeAsync();
             return app;
         }
     }
