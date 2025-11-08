@@ -30,6 +30,6 @@ namespace E_Commerce.Persistence.Repositories
             
         }
 
-        public Task<int> SaveChangesAsync() => _dbContext.SaveChangesAsync();
+        public async Task<int> SaveChangesAsync() => await _dbContext.SaveChangesAsync();
     }
 }
