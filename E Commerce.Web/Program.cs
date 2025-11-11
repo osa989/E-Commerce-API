@@ -1,12 +1,20 @@
 
+using E_Commerce.Domain.Contract;
+using E_Commerce.Persistence.Data.DataSeed;
 using E_Commerce.Persistence.Data.DbContexts;
+using E_Commerce.Persistence.Repositories;
+using E_Commerce.Services;
+using E_Commerce.Services.MappingProfiles;
+using E_Commerce.Services_Abstraction;
+using E_Commerce.Web.Extentions;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace E_Commerce.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         { 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +30,25 @@ namespace E_Commerce.Web
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped<IDataIntializer, DataIntializer>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddAutoMapper(X=>X.AddProfile<ProductProfile>());
+            builder.Services.AddAutoMapper(typeof(ServiceAssemplyReference).Assembly); // register all profiles in the assembly
+            //builder.Services.AddAutoMapper(X=>X.LicenseKey = "",typeof(ProductProfile).Assembly); // allow dependency injection in all profiles 
+
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddTransient<ProductPictureUrlResolver>();
             #endregion
 
             var app = builder.Build();
+            #region DataSeed - apply Migration
+
+            await app.MigrateDatabaseAsync();
+                await app.SeedDatabaseAsync();
+
+
+
+            #endregion
 
 
             #region Configure the HTTP request pipeline.
@@ -35,12 +59,12 @@ namespace E_Commerce.Web
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles(); // to serve static files from wwwroot folder but in version 9 and above its enabled by default
 
             app.MapControllers(); 
             #endregion
 
-            app.Run();
+           await app.RunAsync();
         }
     }
 }
