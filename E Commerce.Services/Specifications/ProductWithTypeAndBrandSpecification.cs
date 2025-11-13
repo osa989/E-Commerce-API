@@ -21,9 +21,7 @@ namespace E_Commerce.Services.Specifications
         // If both brandId and typeId are provided, filter products where P.BrandId == brandId AND P.TypeId == typeId
         // If both brandId and typeId are null, return all products without any filtering
         public ProductWithTypeAndBrandSpecification(ProductQueryParams queryParams)
-            : base(P => (!queryParams.brandId.HasValue || P.BrandId == queryParams.brandId.Value)
-       && (!queryParams.typeId.HasValue || P.TypeId == queryParams.typeId.Value)
-            && (string.IsNullOrEmpty(queryParams.search) || P.Name.ToLower().Contains(queryParams.search.ToLower())))
+            : base(ProductSpecificationHelper.GetProductCriteria(queryParams))
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
