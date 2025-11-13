@@ -1,4 +1,4 @@
-﻿using E_Commerce.Domain.Contract;
+﻿  using E_Commerce.Domain.Contract;
 using E_Commerce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,8 +19,14 @@ namespace E_Commerce.Persistence
             var Query = EntryPoint;
             if (specifications is not null)
             {
+                //checked for Criteria
+                if (specifications.Criteria is not null )
+                {
+                    Query = Query.Where(specifications.Criteria);
+                }
+
                 // check wether includes are not null and not empty
-              if (specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Any())
+                if (specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Any())
                {
                     #region using foreach
                     //foreach (var includeExp in specifications.IncludeExpressions)

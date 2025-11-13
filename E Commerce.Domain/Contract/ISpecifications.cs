@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.Domain.Contract
 {
-    public interface ISpecifications<TEntity,TKey> where TEntity : BaseEntity<TKey>
+    public interface ISpecifications<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
-        public ICollection<Expression<Func<TEntity,object>>> IncludeExpressions { get; }
-
+        ICollection<Expression<Func<TEntity, object>>> IncludeExpressions { get; }
+        Expression<Func<TEntity, bool>> Criteria { get; }
     }
 }

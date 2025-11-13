@@ -9,7 +9,12 @@ namespace E_Commerce.Services.Specifications
 {
     internal class ProductWithTypeAndBrandSpecification  : BaseSpecifications<Product,int>
     {
-        public ProductWithTypeAndBrandSpecification() : base() // by default the constructor of base class is called
+        public ProductWithTypeAndBrandSpecification(int id) : base(P=>P.Id == id)
+        {
+            AddInclude(p => p.ProductType);
+            AddInclude(p => p.ProductBrand);
+        }
+        public ProductWithTypeAndBrandSpecification() : base(null) // doesn't take criteria 
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
