@@ -13,21 +13,21 @@ namespace E_Commerce.Persistence
     {
         //_dbContext.Products.Include(P => P.ProductType).Include(P => P.ProductBrand);  Query to be built
         public static IQueryable<TEntity> CreateQuery<TEntity, TKey>(IQueryable<TEntity> EntryPoint,
-            ISpecifications<TEntity, TKey> specifications)where TEntity : BaseEntity<TKey>
+            ISpecifications<TEntity, TKey> specifications) where TEntity : BaseEntity<TKey>
         {
             //dbcontext.Products
             var Query = EntryPoint;
             if (specifications is not null)
             {
                 //checked for Criteria
-                if (specifications.Criteria is not null )
+                if (specifications.Criteria is not null)
                 {
                     Query = Query.Where(specifications.Criteria);
                 }
 
                 // check wether includes are not null and not empty
                 if (specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Any())
-               {
+                {
                     #region using foreach
                     //foreach (var includeExp in specifications.IncludeExpressions)
                     //{
@@ -36,6 +36,18 @@ namespace E_Commerce.Persistence
                     #endregion
                     Query = specifications.IncludeExpressions
                         .Aggregate(Query, (CurrentQuery, includeExp) => CurrentQuery.Include(includeExp));
+                }
+                if (specifications.OrderBy is not null)
+                {
+                    Query = Query.OrderBy(specifications.OrderBy);
+                }
+                if (specifications.OrderByDescinding is not null)
+                {
+                    Query = Query.OrderByDescending(specifications.OrderByDescinding);
+                }
+                if (specifications.IsPagintated)
+                {
+                    Query = Query.Skip(specifications.Skip).Take(specifications.Take);
                 }
             }
                 return Query;

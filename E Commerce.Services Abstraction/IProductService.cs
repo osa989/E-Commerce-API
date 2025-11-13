@@ -1,4 +1,5 @@
-﻿using E_Commerce.Shared.DTOs.ProductDTOs;
+﻿using E_Commerce.Shared;
+using E_Commerce.Shared.DTOs.ProductDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace E_Commerce.Services_Abstraction
 
         // Get All Types Return IEnumerable Of Types Data Which Will be {Id , Name}
 
-        Task<IEnumerable<ProductDTO>> GetAllProductsAsync();
+        Task<IEnumerable<ProductDTO>> GetAllProductsAsync(ProductQueryParams queryParams);
         Task<ProductDTO?> GetProductByIdAsync(int id);
         Task<IEnumerable<BrandDTO>> GetAllBrandsAsync();
         Task<IEnumerable<TypeDTO>> GetAllTypesAsync();
