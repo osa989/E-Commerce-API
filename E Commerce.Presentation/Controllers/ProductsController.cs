@@ -24,7 +24,7 @@ namespace E_Commerce.Presentation.Controllers
 
         [HttpGet] // swagger doesn't know it is a get verb so we should mention
         // Get : BaseUrl/api/Products
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts([FromQuery]ProductQueryParams queryParams)
+        public async Task<ActionResult<PaginatedResult<ProductDTO>>>GetProducts([FromQuery]ProductQueryParams queryParams)
         {
             var products = await _productService.GetAllProductsAsync(queryParams);
             return Ok(products); //file json with 200 status code for products 
