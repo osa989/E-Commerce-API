@@ -19,7 +19,7 @@ namespace E_Commerce.Persistence.Repositories
         {
             _database = connection.GetDatabase();
         }
-        public async Task<CustomerBasket?> CreateIrUpdateBasketAsync(CustomerBasket basket, TimeSpan timeToLive = default)
+        public async Task<CustomerBasket?> CreateOrUpdateBasketAsync(CustomerBasket basket, TimeSpan timeToLive = default)
         {
             var JsonBasket = JsonSerializer.Serialize(basket);
             var IsCreatedOrUpdated = await _database.StringSetAsync(basket.Id, JsonBasket,

@@ -18,9 +18,9 @@ namespace E_Commerce.Shared.DTOs.BasketDTO
 
 
         );
-    {
+    
 
 
 
-    }
+    
 }
