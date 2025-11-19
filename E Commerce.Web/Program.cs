@@ -45,6 +45,7 @@ namespace E_Commerce.Web
             });
 
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+            builder.Services.AddScoped<IBasketService, BasketService>();
             #endregion
 
             var app = builder.Build();
