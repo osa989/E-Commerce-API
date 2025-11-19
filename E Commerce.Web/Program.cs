@@ -43,6 +43,8 @@ namespace E_Commerce.Web
             {
                 return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection")!);
             });
+
+            builder.Services.AddScoped<IBasketRepository, BasketRepository>();
             #endregion
 
             var app = builder.Build();
