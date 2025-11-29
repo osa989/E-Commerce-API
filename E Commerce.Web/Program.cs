@@ -6,6 +6,7 @@ using E_Commerce.Persistence.Repositories;
 using E_Commerce.Services;
 using E_Commerce.Services.MappingProfiles;
 using E_Commerce.Services_Abstraction;
+using E_Commerce.Web.CustomMiddlewares;
 using E_Commerce.Web.Extentions;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -62,6 +63,29 @@ namespace E_Commerce.Web
 
 
             #region Configure the HTTP request pipeline.
+            #region way to create middleware 
+            //app.Use(async (Context, Next) =>
+            //{
+            //    try
+            //    {
+            //        await Next.Invoke();
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        //log exception
+            //        Console.WriteLine(ex.Message);
+            //        Context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            //        await Context.Response.WriteAsJsonAsync(new
+            //        {
+            //            StatusCode = StatusCodes.Status500InternalServerError,
+            //            Error = $"UnExpected error occured :{ex.Message}"
+            //        });// or you can create a custom error response Class 
+            //    }
+            //}); 
+            #endregion
+            app.UseMiddleware<ExceptionHandlerMiddleWare>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

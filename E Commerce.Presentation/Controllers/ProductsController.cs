@@ -35,28 +35,10 @@ namespace E_Commerce.Presentation.Controllers
         // Get : BaseUrl/api/Products/{id}
         public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
-            try
-            {
-                var product = await _productService.GetProductByIdAsync(id);
-                if (product == null) return NotFound("Product Not found");
-
+            //throw new Exception();
+            var product = await _productService.GetProductByIdAsync(id);
                 return Ok(product);
-            }
-            catch (Exception ex)
-            {
 
-                switch (ex)
-                {
-                    case ArgumentException:
-                        return BadRequest(ex.Message);
-                    case InvalidOperationException:
-                        return BadRequest("Invalid operation");
-                    case OutOfMemoryException:
-                        return StatusCode(503, "Service unavailable, try again later");
-                    default:
-                        return StatusCode(500, "Internal server error");
-                }
-            }
         }
         [HttpGet("brands")]
         // Get : BaseUrl/api/Products/brands
