@@ -2,6 +2,7 @@
 using E_Commerce.Services_Abstraction;
 using E_Commerce.Shared;
 using E_Commerce.Shared.DTOs.ProductDTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace E_Commerce.Presentation.Controllers
         {
             //throw new Exception();
             var product = await _productService.GetProductByIdAsync(id);
-                return Ok(product);
+            return Ok(product);
 
         }
         [HttpGet("brands")]
