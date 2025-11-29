@@ -1,6 +1,8 @@
-﻿using E_Commerce.Services_Abstraction;
+﻿using E_Commerce.Presentation.Attrebutes;
+using E_Commerce.Services_Abstraction;
 using E_Commerce.Shared;
 using E_Commerce.Shared.DTOs.ProductDTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,7 @@ namespace E_Commerce.Presentation.Controllers
 
         [HttpGet] // swagger doesn't know it is a get verb so we should mention
         // Get : BaseUrl/api/Products
+        [RedisCache(5)]
         public async Task<ActionResult<PaginatedResult<ProductDTO>>>GetProducts([FromQuery]ProductQueryParams queryParams)
         {
             var products = await _productService.GetAllProductsAsync(queryParams);
@@ -33,8 +36,10 @@ namespace E_Commerce.Presentation.Controllers
         // Get : BaseUrl/api/Products/{id}
         public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
+            //throw new Exception();
             var product = await _productService.GetProductByIdAsync(id);
             return Ok(product);
+
         }
         [HttpGet("brands")]
         // Get : BaseUrl/api/Products/brands

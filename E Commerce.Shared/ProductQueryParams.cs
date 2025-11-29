@@ -25,7 +25,7 @@ namespace E_Commerce.Shared
             }
         }
 
-        private int _pageSize;
+        private int _pageSize = DefaultPageSize;
 
         public int PageSize
         {

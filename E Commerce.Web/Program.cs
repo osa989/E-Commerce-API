@@ -6,7 +6,10 @@ using E_Commerce.Persistence.Repositories;
 using E_Commerce.Services;
 using E_Commerce.Services.MappingProfiles;
 using E_Commerce.Services_Abstraction;
+using E_Commerce.Web.CustomMiddlewares;
 using E_Commerce.Web.Extentions;
+using E_Commerce.Web.Factories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using System.Threading.Tasks;
@@ -46,6 +49,12 @@ namespace E_Commerce.Web
 
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
             builder.Services.AddScoped<IBasketService, BasketService>();
+            builder.Services.AddScoped<ICacheRepository, CacheRepository>();
+            builder.Services.AddScoped<ICacheService, CacheService>();
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationResponse;
+            });
             #endregion
 
             var app = builder.Build();
@@ -60,6 +69,29 @@ namespace E_Commerce.Web
 
 
             #region Configure the HTTP request pipeline.
+            #region way to create middleware 
+            //app.Use(async (Context, Next) =>
+            //{
+            //    try
+            //    {
+            //        await Next.Invoke();
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        //log exception
+            //        Console.WriteLine(ex.Message);
+            //        Context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            //        await Context.Response.WriteAsJsonAsync(new
+            //        {
+            //            StatusCode = StatusCodes.Status500InternalServerError,
+            //            Error = $"UnExpected error occured :{ex.Message}"
+            //        });// or you can create a custom error response Class 
+            //    }
+            //}); 
+            #endregion
+            app.UseMiddleware<ExceptionHandlerMiddleWare>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
