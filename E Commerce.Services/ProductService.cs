@@ -40,7 +40,7 @@ namespace E_Commerce.Services
             var Spec = new ProductWithTypeAndBrandSpecification(queryParams);
             var Products = await Repo.GetAllAsync(Spec);
             var DataToReturn = _mapper.Map<IEnumerable<ProductDTO>>(Products);
-            var CountOfReturnedData = DataToReturn.Count();
+            var CountOfReturnedData = DataToReturn.Count(); // number of items after pagination
             var CountSpec = new ProductCountSpecification(queryParams);
             var CountOfAllProducts = await Repo.CountAsync(CountSpec);
             return new PaginatedResult<ProductDTO>(queryParams.PageIndex,CountOfReturnedData, CountOfAllProducts, DataToReturn);

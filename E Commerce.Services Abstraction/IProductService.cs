@@ -20,7 +20,7 @@ namespace E_Commerce.Services_Abstraction
 
         // Get All Types Return IEnumerable Of Types Data Which Will be {Id , Name}
 
-        Task<PaginatedResult<ProductDTO>> GetAllProductssAsync(ProductQueryParams queryParams);
+        Task<PaginatedResult<ProductDTO>> GetAllProductsAsync(ProductQueryParams queryParams);
         Task<ProductDTO?> GetProductByIdAsync(int id);
         Task<IEnumerable<BrandDTO>> GetAllBrandsAsync();
         Task<IEnumerable<TypeDTO>> GetAllTypesAsync();
