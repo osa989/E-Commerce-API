@@ -66,6 +66,12 @@ namespace E_Commerce.Shared.CommonResult
 
         public static new Result<TValue> Fail(List<Error> errors) => new Result<TValue>(errors);
 
+        public static implicit operator Result<TValue>(TValue value) => Ok(value); // this will allow us to return TValue directly where Result<TValue> is expected
+
+        public static implicit operator Result<TValue>(Error error) => Fail(error); // this will allow us to return Error directly where Result<TValue> is expected
+
+        public static implicit operator Result<TValue>(List<Error> errors) => Fail(errors); // this will allow us to return List<Error> directly where Result<TValue> is expected
+
 
         #region syntax sugar
         // syntax sugar 
