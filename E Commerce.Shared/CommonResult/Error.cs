@@ -8,7 +8,7 @@ namespace E_Commerce.Shared.CommonResult
 {
     public class Error
     {
-        public Error(string code, string description, ErrorType type)
+        private Error(string code, string description, ErrorType type)
         {
             Code = code;
             Description = description;
@@ -20,8 +20,8 @@ namespace E_Commerce.Shared.CommonResult
 
         public ErrorType Type { get;  }
 
-        //static factory method to create error 
-        public static Error Failure(string code ="General Failure", string description = "General Failure has occured  ")
+        //static factory method to create error and making constructor private this another way to set values
+        public static Error Failure(string code ="General Failure", string description = "General Failure has occured  ") // this is initial value if user dont provide any value
         {
             return new Error (code , description, ErrorType.Failure);  
         }

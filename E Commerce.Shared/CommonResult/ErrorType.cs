@@ -6,7 +6,7 @@
         Validation = 1,
         NotFound = 2,
         Unauthorized = 3,  
-        Forbidden = 4,
+        Forbidden = 4 ,
         InvalidCredintials= 5
     }
 }
