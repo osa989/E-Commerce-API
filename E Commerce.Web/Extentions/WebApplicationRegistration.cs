@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Domain.Contract;
 using E_Commerce.Persistence.Data.DbContexts;
+using E_Commerce.Persistence.IdentityData.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -12,6 +13,16 @@ namespace E_Commerce.Web.Extentions
             await using var Scope =  app.Services.CreateAsyncScope();
 
             var dbContextService = Scope.ServiceProvider.GetRequiredService<StoreDbContext>();
+            var PendingMigrations = await dbContextService.Database.GetPendingMigrationsAsync();
+            if (PendingMigrations.Any())
+               await dbContextService.Database.MigrateAsync();
+            return app;
+        }   
+        public static async Task<WebApplication> MigrateIdentityDatabaseAsync(this WebApplication app)
+        {
+            await using var Scope =  app.Services.CreateAsyncScope();
+
+            var dbContextService = Scope.ServiceProvider.GetRequiredService<StoreIdentityDbContext>();
             var PendingMigrations = await dbContextService.Database.GetPendingMigrationsAsync();
             if (PendingMigrations.Any())
                await dbContextService.Database.MigrateAsync();
