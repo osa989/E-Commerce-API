@@ -12,9 +12,8 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[Controller]")] //BaseUrl/api/products
-    public class ProductsController : ControllerBase
+
+    public class ProductsController : ApiBaseController
     {
         private readonly IProductService _productService;
 
@@ -31,6 +30,7 @@ namespace E_Commerce.Presentation.Controllers
         {
             var products = await _productService.GetAllProductsAsync(queryParams);
             return Ok(products); //file json with 200 status code for products 
+
         }
         [HttpGet("{id}")]
         // Get : BaseUrl/api/Products/{id}
@@ -38,7 +38,7 @@ namespace E_Commerce.Presentation.Controllers
         {
             //throw new Exception();
             var product = await _productService.GetProductByIdAsync(id);
-            return Ok(product);
+            return HandleResult<ProductDTO>(product);
 
         }
         [HttpGet("brands")]

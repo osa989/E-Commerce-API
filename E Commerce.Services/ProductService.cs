@@ -61,7 +61,7 @@ namespace E_Commerce.Services
             var product =await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(Spec);
 
             if(product == null)
-                Error.NotFound("Product NotFound",$"Product with Id {id} Not found");
+               return Error.NotFound("Product NotFound",$"Product with Id {id} Not found");
             // Error => Result<ProductDTO>
             return _mapper.Map<ProductDTO>(product);
             // how to  cast from ProductDTP to Result<ProductDTO>
