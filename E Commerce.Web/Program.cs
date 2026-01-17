@@ -1,7 +1,10 @@
 
 using E_Commerce.Domain.Contract;
+using E_Commerce.Domain.Entities.IdentityModule;
 using E_Commerce.Persistence.Data.DataSeed;
 using E_Commerce.Persistence.Data.DbContexts;
+using E_Commerce.Persistence.IdentityData.DataSeed;
+using E_Commerce.Persistence.IdentityData.DbContexts;
 using E_Commerce.Persistence.Repositories;
 using E_Commerce.Services;
 using E_Commerce.Services.MappingProfiles;
@@ -9,6 +12,7 @@ using E_Commerce.Services_Abstraction;
 using E_Commerce.Web.CustomMiddlewares;
 using E_Commerce.Web.Extentions;
 using E_Commerce.Web.Factories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -34,7 +38,8 @@ namespace E_Commerce.Web
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddScoped<IDataIntializer, DataIntializer>();
+            builder.Services.AddKeyedScoped<IDataIntializer, DataIntializer>("Default");
+            builder.Services.AddKeyedScoped<IDataIntializer, IdentityDataIntialize>("Identity");
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             //builder.Services.AddAutoMapper(X=>X.AddProfile<ProductProfile>());
             builder.Services.AddAutoMapper(typeof(ServiceAssemplyReference).Assembly); // register all profiles in the assembly
@@ -51,17 +56,29 @@ namespace E_Commerce.Web
             builder.Services.AddScoped<IBasketService, BasketService>();
             builder.Services.AddScoped<ICacheRepository, CacheRepository>();
             builder.Services.AddScoped<ICacheService, CacheService>();
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationResponse;
             });
+            builder.Services.AddDbContext<StoreIdentityDbContext>(options=> {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+            });
+            //builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
+            //    .AddEntityFrameworkStores<StoreIdentityDbContext>()
+            //    .AddDefaultTokenProviders(); // not best practice because it registers many services that we may not use (All services related to identity )
+            builder.Services.AddIdentityCore<ApplicationUser>()// register management only
+                .AddRoles<IdentityRole>() // register role management 
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
             #endregion
 
             var app = builder.Build();
             #region DataSeed - apply Migration
 
             await app.MigrateDatabaseAsync();
-                await app.SeedDatabaseAsync();
+            await app.MigrateIdentityDatabaseAsync();
+            await app.SeedDatabaseAsync();
+            await app.SeedIdentityDatabaseAsync();
 
 
 
