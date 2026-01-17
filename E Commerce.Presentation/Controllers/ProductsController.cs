@@ -23,10 +23,10 @@ namespace E_Commerce.Presentation.Controllers
             _productService = productService;
         }
 
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         [HttpGet] // swagger doesn't know it is a get verb so we should mention
         // Get : BaseUrl/api/Products
-        [RedisCache(5)]
+        //[RedisCache(5)]
         public async Task<ActionResult<PaginatedResult<ProductDTO>>>GetProducts([FromQuery]ProductQueryParams queryParams)
         {
             var products = await _productService.GetAllProductsAsync(queryParams);
