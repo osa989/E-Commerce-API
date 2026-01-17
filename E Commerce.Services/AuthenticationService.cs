@@ -24,6 +24,20 @@ namespace E_Commerce.Services
             this.configuration = configuration;
         }
 
+        public async Task<bool> CheckEmailAsync(string Email)
+        {
+            var User = await userManager.FindByEmailAsync(Email);
+            return User != null;
+        }
+
+        public async Task<Result<UserDTO>> GetUserByEmailAsync(string Email)
+        {
+            var User =await userManager.FindByEmailAsync(Email); // currently loged in user
+            if (User == null)
+                return Error.NotFound("User.NotFound",$"No user with email{Email} was found");
+            return new UserDTO(User.Email!, User.DisplayName, await CreateTokenAsync(User));
+        }
+
         public async Task<Result<UserDTO>> LoginAsync(LoginDTO loginDTO)
         {
             var user = await userManager.FindByEmailAsync(loginDTO.Email);
