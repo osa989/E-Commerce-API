@@ -1,4 +1,4 @@
-# 🛒 Online E-Commerce Web API 
+# 🛒 Online E-Commerce Web API  
 
 A production-ready E-Commerce RESTful API built using **ASP.NET Core**, following **Onion Layer Architecture** and industry best practices. This project was developed as part of the **Route Academy** ASP.NET course.
 
